@@ -2,21 +2,17 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-output "az" {
-  value = data.aws_availability_zones.available.names
-}
-
-#Used for default vpc if you want other custom vpc use filters 
-
-
 data "aws_vpc" "default" {
   default = true
 }
 
-output "default_vpc" {
-  value = data.aws_vpc.default.id
+data "aws_route_table" "main" {
+  vpc_id = data.aws_vpc.default.id
+  filter {
+    name   = "association.main"
+    values = ["true"]
+  }
 }
-
 
 #cusutom vpc 
 
